@@ -9,4 +9,9 @@ This file is responsible for the networking resources. We add the following as a
   - IGW attachment
   - Public Subnets(2)
   - Private Subnets(2)
-  - NAT gateway 
+  - NAT gateway Elastic IP (2)
+  - NAT gateway in Public subnets (2)
+  - Public Route Table
+  - Default Public Route
+  
+
