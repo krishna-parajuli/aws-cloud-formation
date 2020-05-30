@@ -21,8 +21,8 @@ Resources:
         CidrIp: 0.0.0.0/0
       SecurityGroupEgress:
       - IpProtocol: tcp
-        FromPort: 80
-        ToPort: 80
+        FromPort: 0
+        ToPort: 65535
         CidrIp: 0.0.0.0/0
   BastionServerSecGroup:
     Type: AWS::EC2::SecurityGroup
@@ -52,8 +52,7 @@ Resources:
       - IpProtocol: tcp
         FromPort: 8080
         ToPort: 8080
-        CidrIp: 0.0.0.0/0
-        # SourceSecurityGroupId: !Ref LBSecGroup
+        SourceSecurityGroupId: !Ref LBSecGroup
       - IpProtocol: tcp
         FromPort: 22
         ToPort: 22
@@ -107,11 +106,12 @@ Resources:
       KeyName: krishna-test
       SecurityGroups:
       - Ref: WebServerSecGroup
-      InstanceType: t3a.medium
+      InstanceType: t2.micro
       BlockDeviceMappings:
       - DeviceName: "/dev/sdk"
         Ebs:
-          VolumeSize: '10'
+          VolumeSize: '8'
+          DeleteOnTermination: "true"
   WebAppGroup:
     Type: AWS::AutoScaling::AutoScalingGroup
     Properties:
@@ -120,7 +120,7 @@ Resources:
           !Sub "${EnvironmentName}-PRIV-NETS"
       LaunchConfigurationName:
         Ref: WebAppLaunchConfig
-      MinSize: '4'
+      MinSize: '2'
       MaxSize: '6'
       TargetGroupARNs:
       - Ref: WebAppTargetGroup
